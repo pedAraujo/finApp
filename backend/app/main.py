@@ -1,6 +1,6 @@
-from fastapi import FastAPI
 import uvicorn
-from .logger import logger
+from fastapi import FastAPI
+from .logging import logger
 
 app = FastAPI()
 logger.info("App started")
