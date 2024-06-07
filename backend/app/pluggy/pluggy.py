@@ -12,8 +12,13 @@ def get_api_key() -> str:
         "clientSecret": os.getenv("PLUGGY_CLIENT_SECRET"),
     }
     headers = {"accept": "application/json", "content-type": "application/json"}
-    response = requests.post(auth_url, payload, headers).json()
-    return response["apiKey"]
+    response = requests.post(auth_url, json=payload, headers=headers)
+    response_data = response.json()
+
+    if response.status_code != 200:
+        raise Exception(f"Error fetching API key: {response_data}")
+
+    return response_data["apiKey"]
 
 
 def get_connect_token() -> str:
@@ -25,5 +30,10 @@ def get_connect_token() -> str:
         "content-type": "application/json",
         "X-API-KEY": api_key,
     }
-    response = requests.post(url, json=payload, headers=headers).json()
-    return response["accessToken"]
+    response = requests.post(url, json=payload, headers=headers)
+    response_data = response.json()
+
+    if response.status_code != 200:
+        raise Exception(f"Error fetching connect token: {response_data}")
+
+    return response_data["accessToken"]
