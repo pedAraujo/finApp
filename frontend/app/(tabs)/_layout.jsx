@@ -6,14 +6,25 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 const TabsLayout = () => {
     return (
-        <Tabs>
+        <Tabs
+            screenOptions={{
+                tabBarActiveTintColor: "#007AFF",
+                tabBarInactiveTintColor: "gray",
+                // tabBarStyle: {
+                //     // backgroundColor: "white",
+                // },
+            }}>
             <Tabs.Screen
                 name="home"
                 options={{
                     title: "Home",
                     headerShown: false,
-                    tabBarIcon: ({ color, size }) => (
-                        <Foundation name="home" size={24} color="black" />
+                    tabBarIcon: ({ color, size, focused }) => (
+                        <Foundation
+                            name="home"
+                            size={24}
+                            color={focused ? "#007AFF" : "gray"}
+                        />
                     ),
                 }}
             />
@@ -22,11 +33,11 @@ const TabsLayout = () => {
                 options={{
                     title: "Transactions",
                     headerShown: false,
-                    tabBarIcon: ({ color, size }) => (
+                    tabBarIcon: ({ color, size, focused }) => (
                         <MaterialIcons
                             name="compare-arrows"
                             size={24}
-                            color="black"
+                            color={focused ? "#007AFF" : "gray"}
                         />
                     ),
                 }}
@@ -36,8 +47,12 @@ const TabsLayout = () => {
                 options={{
                     title: "Profile",
                     headerShown: false,
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="person" size={24} color="black" />
+                    tabBarIcon: ({ color, size, focused }) => (
+                        <Ionicons
+                            name="person"
+                            size={24}
+                            color={focused ? "#007AFF" : "gray"}
+                        />
                     ),
                 }}
             />

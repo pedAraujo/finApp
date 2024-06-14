@@ -1,23 +1,35 @@
 //index is the Home page of the app
 
-import { Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import CustomButton from "./components/CustomButton";
+import { Redirect, router } from "expo-router";
 
 export default function App() {
     return (
-        <View style={styles.container}>
-            <Text>FinApp!</Text>
+        <SafeAreaView style={styles.container}>
             <StatusBar style="auto" />
-            <Link href="home" style={{ color: "blue" }}>
-                Go to Home
-            </Link>
-        </View>
+            <ScrollView contentContainerStyle={styles.container}>
+                <Text>FinApp!</Text>
+                <CustomButton
+                    title="Login"
+                    handlePress={() => router.push("login")}
+                    containerStyles={{
+                        backgroundColor: "blue",
+                        padding: 10,
+                        borderRadius: 5,
+                    }}
+                    textStyles={{ color: "white" }}
+                />
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
+        height: "100%",
         flex: 1,
         backgroundColor: "#fff",
         alignItems: "center",
