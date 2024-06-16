@@ -11,10 +11,11 @@ export default function App() {
         <SafeAreaView style={styles.container}>
             <StatusBar style="auto" />
             <ScrollView contentContainerStyle={styles.container}>
-                <Text>FinApp!</Text>
+                <Text>FinApp</Text>
                 <CustomButton
-                    title="Login"
-                    handlePress={() => router.push("login")}
+                    title="Entrar"
+                    // CHANGE THIS TO "login" TO NAVIGATE TO THE LOGIN PAGE LATER
+                    handlePress={() => router.push("pluggy")}
                     containerStyles={{
                         backgroundColor: "blue",
                         padding: 10,
