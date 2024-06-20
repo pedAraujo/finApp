@@ -1,5 +1,7 @@
 import os
+from typing import List
 from dotenv import load_dotenv
+from pydantic import AnyHttpUrl
 from pydantic_settings import BaseSettings
 
 load_dotenv()
@@ -12,7 +14,8 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
-    PROJECT_NAME: str = "FinApp"
+    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
+    PROJECT_NAME: str = "FINAPP"
 
     # Database
     MONGO_CONNECTION_STRING: str = os.getenv("MONGO_CONNECTION_STRING")
