@@ -7,8 +7,8 @@ from pydantic import Field, EmailStr
 
 class User(Document):
     user_id: UUID = Field(default_factory=uuid4)
-    username: str = Field(index=True, unique=True)
-    # email type expression warning by Pylance required for db colletion creation
+    # type ignore for warning by Pylance - required for db colletion creation
+    username: Indexed(str, unique=True)  # type: ignore
     email: Indexed(EmailStr, unique=True)  # type: ignore
     hash_password: str
     first_name: Optional[str] = None
