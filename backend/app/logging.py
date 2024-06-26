@@ -20,3 +20,7 @@ logger.handlers = [stream_handler, file_handler]
 
 # set log level
 logger.setLevel(logging.INFO)
+
+# disable passlib warning log
+# AttributeError: module 'bcrypt' has no attribute '__about__'
+logging.getLogger("passlib").setLevel(logging.ERROR)
