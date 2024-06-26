@@ -20,6 +20,11 @@ class Settings(BaseSettings):
     # Database
     MONGO_CONNECTION_STRING: str = os.getenv("MONGO_CONNECTION_STRING")
 
+    # Pluggy
+    PLUGGY_CLIENT_ID: str = os.getenv("PLUGGY_CLIENT_ID")
+    PLUGGY_CLIENT_SECRET: str = os.getenv("PLUGGY_CLIENT_SECRET")
+    PLUGGY_BASE_URL: str = "https://api.pluggy.ai"
+
     class Config:
         case_sensitive = True
 
