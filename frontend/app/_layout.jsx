@@ -1,15 +1,25 @@
 // _layout is the root template present in all screens of the app
 
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
 import { Stack } from "expo-router";
+import { RootSiblingParent } from "react-native-root-siblings";
+import { AuthProvider } from "./context/JWTAuthContext";
 
 const RootLayout = () => {
     return (
-        <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        </Stack>
+        <RootSiblingParent>
+            <AuthProvider>
+                <Stack>
+                    <Stack.Screen
+                        name="index"
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="(auth)"
+                        options={{ headerShown: false }}
+                    />
+                </Stack>
+            </AuthProvider>
+        </RootSiblingParent>
     );
 };
 

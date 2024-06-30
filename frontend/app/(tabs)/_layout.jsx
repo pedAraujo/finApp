@@ -1,18 +1,44 @@
-import { View, Text } from "react-native";
-import { Tabs, Redirect } from "expo-router";
+import { useEffect } from "react";
+import { View, ActivityIndicator } from "react-native";
+import { Tabs, useRouter } from "expo-router";
 import { Foundation } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useAuth } from "../context/JWTAuthContext";
 
 const TabsLayout = () => {
+    const { isAuthenticated, isInitialized } = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (isInitialized) {
+            if (!isAuthenticated) {
+                console.log("Redirecting to login");
+                router.replace("login");
+            } else {
+                console.log("User is authenticated");
+            }
+        }
+    }, [isInitialized, isAuthenticated]);
+
+    if (!isInitialized) {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}>
+                <ActivityIndicator size="large" />
+            </View>
+        );
+    }
+
     return (
         <Tabs
             screenOptions={{
                 tabBarActiveTintColor: "#007AFF",
                 tabBarInactiveTintColor: "gray",
-                // tabBarStyle: {
-                //     // backgroundColor: "white",
-                // },
             }}>
             <Tabs.Screen
                 name="home"

@@ -1,27 +1,20 @@
-//index is the Home page of the app
-
 import { StatusBar } from "expo-status-bar";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CustomButton from "./components/CustomButton";
-import { Redirect, router } from "expo-router";
+import { Button } from "react-native-elements";
+import { router } from "expo-router"; // Importe router corretamente
 
 export default function App() {
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style="auto" />
-            <ScrollView contentContainerStyle={styles.container}>
-                <Text>FinApp</Text>
-                <CustomButton
+            <ScrollView contentContainerStyle={styles.contentContainer}>
+                <Text style={styles.title}>FinApp</Text>
+                <Button
                     title="Entrar"
-                    // CHANGE THIS TO "login" TO NAVIGATE TO THE LOGIN PAGE LATER
-                    handlePress={() => router.push("pluggy")}
-                    containerStyles={{
-                        backgroundColor: "blue",
-                        padding: 10,
-                        borderRadius: 5,
-                    }}
-                    textStyles={{ color: "white" }}
+                    onPress={() => router.push("login")}
+                    buttonStyle={styles.button}
+                    containerStyle={styles.buttonContainer}
                 />
             </ScrollView>
         </SafeAreaView>
@@ -30,10 +23,28 @@ export default function App() {
 
 const styles = StyleSheet.create({
     container: {
-        height: "100%",
         flex: 1,
         backgroundColor: "#fff",
+    },
+    contentContainer: {
+        flexGrow: 1,
         alignItems: "center",
         justifyContent: "center",
+        padding: 20,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: "bold",
+        marginBottom: 20,
+        textAlign: "center",
+    },
+    buttonContainer: {
+        width: "100%",
+        marginTop: 20,
+    },
+    button: {
+        backgroundColor: "blue",
+        padding: 10,
+        borderRadius: 5,
     },
 });

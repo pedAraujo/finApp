@@ -1,11 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { BACKEND_BASE_URL } from "@env";
+import * as SecureStore from "expo-secure-store";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 import { PluggyConnect } from "react-native-pluggy-connect";
 import { Redirect } from "expo-router";
 
-const SERVER_CONNECT_TOKEN_URL = "http://127.0.0.1:8000/pluggy-connect-token";
+const SERVER_CONNECT_TOKEN_URL = `${BACKEND_BASE_URL}/pluggy/connect-token`;
 
 const Pluggy = () => {
     const [token, setToken] = useState();
@@ -14,6 +16,10 @@ const Pluggy = () => {
     useEffect(() => {
         async function fetchToken() {
             try {
+                user = await SecureStore.getItemAsync("user");
+                user_email = JSON.parse(user).email;
+                console.log("user_email:", user_email);
+
                 const response = await fetch(SERVER_CONNECT_TOKEN_URL, {
                     method: "POST",
                     headers: {
@@ -22,7 +28,7 @@ const Pluggy = () => {
                     },
                     body: JSON.stringify({
                         options: {
-                            clientUserId: "p3d.araujo@gmail.com",
+                            clientUserId: user_email,
                         },
                     }),
                 });
@@ -50,29 +56,6 @@ const Pluggy = () => {
     const handleOnSuccess = useCallback((itemData) => {
         console.log("success", itemData);
     }, []);
-    // const handleOnSuccess = useCallback(async (itemData) => {
-    //     console.log("success", itemData);
-    //     try {
-    //         const response = await fetch(SEND_ITEM_DATA_API_URL, {
-    //             method: "POST",
-    //             headers: {
-    //                 Accept: "application/json",
-    //                 "Content-Type": "application/json",
-    //             },
-    //             body: JSON.stringify(itemData),
-    //         });
-
-    //         if (response.ok) {
-    //             const { categoryBalances, startDate } = await response.json();
-    //             console.log("Report data", { categoryBalances, startDate });
-    //             setToken(""); // Close the widget
-    //         } else {
-    //             throw new Error("Failed to send item data");
-    //         }
-    //     } catch (error) {
-    //         console.error("Error sending item data", error);
-    //     }
-    // }, []);
 
     const handleOnError = useCallback((error) => {
         console.log("error", error);
