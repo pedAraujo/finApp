@@ -4,9 +4,6 @@ from typing import Any
 from app.services.user_service import UserService
 from app.core.security import create_access_token, create_refresh_token
 from app.schemas.auth_schema import TokenSchema
-from app.schemas.user_schema import UserOut
-from app.api.dependencies.user_deps import get_current_user
-from app.models.user_model import User
 from app.core.config import settings
 from jose import jwt
 from app.schemas.auth_schema import TokenPayload
@@ -36,13 +33,6 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()) -> Any:
         "access_token": create_access_token(user.user_id),
         "refresh_token": create_refresh_token(user.user_id),
     }
-
-
-@auth_router.post(
-    "/test-token", summary="Test if access token is valid", response_model=UserOut
-)
-async def test_token(user: User = Depends(get_current_user)):
-    return user
 
 
 @auth_router.post(
