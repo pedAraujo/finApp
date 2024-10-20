@@ -1,89 +1,79 @@
-import { useEffect } from "react";
-import { View, ActivityIndicator } from "react-native";
-import { Tabs, useRouter } from "expo-router";
-import { Foundation } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useAuth } from "../context/JWTAuthContext";
+import React from "react";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { Tabs } from "expo-router";
+import { Foundation, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../context/AuthContext";
+import { Avatar } from "react-native-elements";
+import { ProtectedRoute } from "../components/ProtectedRoute";
 
 const TabsLayout = () => {
-    const { isAuthenticated, isInitialized } = useAuth();
-    const router = useRouter();
-
-    useEffect(() => {
-        if (isInitialized) {
-            if (!isAuthenticated) {
-                console.log("Redirecting to login");
-                router.replace("login");
-            } else {
-                console.log("User is authenticated");
-            }
-        }
-    }, [isInitialized, isAuthenticated]);
-
-    if (!isInitialized) {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}>
-                <ActivityIndicator size="large" />
-            </View>
-        );
-    }
+    const navigation = useNavigation();
+    const { logout } = useAuth();
 
     return (
-        <Tabs
-            screenOptions={{
-                tabBarActiveTintColor: "#007AFF",
-                tabBarInactiveTintColor: "gray",
-            }}>
-            <Tabs.Screen
-                name="home"
-                options={{
-                    title: "Home",
-                    headerShown: false,
-                    tabBarIcon: ({ color, size, focused }) => (
-                        <Foundation
-                            name="home"
-                            size={24}
-                            color={focused ? "#007AFF" : "gray"}
-                        />
-                    ),
-                }}
-            />
-            <Tabs.Screen
-                name="transactions"
-                options={{
-                    title: "Transactions",
-                    headerShown: false,
-                    tabBarIcon: ({ color, size, focused }) => (
-                        <MaterialIcons
-                            name="compare-arrows"
-                            size={24}
-                            color={focused ? "#007AFF" : "gray"}
-                        />
-                    ),
-                }}
-            />
-            <Tabs.Screen
-                name="profile"
-                options={{
-                    title: "Profile",
-                    headerShown: false,
-                    tabBarIcon: ({ color, size, focused }) => (
-                        <Ionicons
-                            name="person"
-                            size={24}
-                            color={focused ? "#007AFF" : "gray"}
-                        />
-                    ),
-                }}
-            />
-        </Tabs>
+        <ProtectedRoute>
+            <View style={{ flex: 1 }}>
+                <Tabs
+                    screenOptions={{
+                        tabBarActiveTintColor: "#007AFF",
+                        tabBarInactiveTintColor: "gray",
+                    }}>
+                    <Tabs.Screen
+                        name="home"
+                        options={{
+                            title: "Home",
+                            tabBarIcon: ({ color, size, focused }) => (
+                                <Foundation
+                                    name="home"
+                                    size={24}
+                                    color={focused ? "#007AFF" : "gray"}
+                                />
+                            ),
+                        }}
+                    />
+                    <Tabs.Screen
+                        name="transactions"
+                        options={{
+                            title: "Transactions",
+                            tabBarIcon: ({ color, size, focused }) => (
+                                <MaterialIcons
+                                    name="compare-arrows"
+                                    size={24}
+                                    color={focused ? "#007AFF" : "gray"}
+                                />
+                            ),
+                        }}
+                    />
+                    <Tabs.Screen
+                        name="profile"
+                        options={{
+                            title: "Profile",
+                            tabBarIcon: ({ color, size, focused }) => (
+                                <Ionicons
+                                    name="person"
+                                    size={24}
+                                    color={focused ? "#007AFF" : "gray"}
+                                />
+                            ),
+                        }}
+                    />
+                </Tabs>
+            </View>
+        </ProtectedRoute>
     );
 };
+
+const styles = StyleSheet.create({
+    header: {
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        padding: 10,
+        backgroundColor: "#f0f0f0",
+        borderBottomWidth: 1,
+        borderBottomColor: "#ccc",
+    },
+});
 
 export default TabsLayout;

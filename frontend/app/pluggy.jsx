@@ -2,41 +2,47 @@ import { BACKEND_BASE_URL } from "@env";
 import * as SecureStore from "expo-secure-store";
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-
 import { StatusBar } from "expo-status-bar";
 import { PluggyConnect } from "react-native-pluggy-connect";
-import { Redirect } from "expo-router";
-
 const SERVER_CONNECT_TOKEN_URL = `${BACKEND_BASE_URL}/pluggy/connect-token`;
+import { useRouter } from "expo-router";
+import axiosInstance from "./services/axios";
 
 const Pluggy = () => {
+    const router = useRouter();
     const [token, setToken] = useState();
     const [error, setError] = useState();
 
     useEffect(() => {
         async function fetchToken() {
             try {
-                user = await SecureStore.getItemAsync("user");
-                user_email = JSON.parse(user).email;
-                console.log("user_email:", user_email);
+                user = JSON.parse(await SecureStore.getItemAsync("user"));
+                console.log("auth-pluggy user:", user);
+                user_email = user.email;
+                console.log("auth-pluggy user_email:", user_email);
+                const JWTkey = await SecureStore.getItemAsync("access_token");
+                console.log("auth-pluggy JWTkey:", JWTkey);
 
-                const response = await fetch(SERVER_CONNECT_TOKEN_URL, {
-                    method: "POST",
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
+                const response = await axiosInstance.post(
+                    SERVER_CONNECT_TOKEN_URL,
+                    {
                         options: {
                             clientUserId: user_email,
                         },
-                    }),
-                });
+                    },
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${JWTkey}`,
+                        },
+                    }
+                );
 
                 const responseJson = await response.json();
 
                 if (response.ok) {
-                    console.log(responseJson);
+                    console.log("auth-pluggy response:", responseJson);
                     const { accessToken } = responseJson;
                     setToken(accessToken);
                 } else {
@@ -77,7 +83,6 @@ const Pluggy = () => {
     }
 
     if (!token) {
-        // loading screen
         return (
             <View style={styles.container}>
                 <Text>Loading...</Text>

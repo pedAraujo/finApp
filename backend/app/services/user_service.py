@@ -1,36 +1,20 @@
-from typing import Optional
 from uuid import UUID
 from app.schemas.user_schema import UserAuth
 from app.models.user_model import User
-from app.core.security import get_password, verify_password
+from app.repository.user_repository import UserRepo
 
 
-class UserService:
-    @staticmethod
-    async def create_user(user: UserAuth):
-        user_instance = User(
-            username=user.username,
-            email=user.email,
-            hash_password=get_password(user.password),
-            first_name=user.first_name,
-            last_name=user.last_name,
-        )
-        await user_instance.insert()
-        return user_instance
+async def create_user(user: UserAuth) -> User:
+    return await UserRepo.create_user(user=user)
 
-    @staticmethod
-    async def authenticate(email: str, password: str) -> Optional[User]:
-        user = await UserService.get_user_by_email(email=email)
-        if not user:
-            return None
-        if not verify_password(password=password, hashed_password=user.hash_password):
-            return None
-        return user
 
-    @staticmethod
-    async def get_user_by_email(email: str) -> Optional[User]:
-        return await User.find_one(User.email == email)
+async def authenticate(email: str, password: str) -> User | None:
+    return await UserRepo.authenticate(email=email, password=password)
 
-    @staticmethod
-    async def get_user_by_id(id: UUID) -> Optional[User]:
-        return await User.find_one(User.user_id == id)
+
+async def get_user_by_email(email: str) -> User | None:
+    return await UserRepo.get_user_by_email(email=email)
+
+
+async def get_user_by_id(id: UUID) -> User | None:
+    return await UserRepo.get_user_by_id(id=id)

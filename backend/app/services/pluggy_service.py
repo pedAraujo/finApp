@@ -15,12 +15,13 @@ async def get_api_key(client) -> str:
     if response.status_code != 200:
         raise Exception(f"Error fetching API key: {response_data}")
 
-    return response_data["apiKey"]
+    return response_data
 
 
 async def get_connect_token(client) -> str:
     token_url = f"{settings.PLUGGY_BASE_URL}/connect_token"
     api_key = await get_api_key(client)
+    api_key = api_key["apiKey"]
     payload = {"options": {"clientUserId": "My App UserId"}}
     headers = {
         "accept": "application/json",

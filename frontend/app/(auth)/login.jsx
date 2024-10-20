@@ -4,23 +4,23 @@ import { StatusBar } from "expo-status-bar";
 import { Input, Button } from "react-native-elements";
 import { Link, router } from "expo-router";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { useAuth } from "../context/JWTAuthContext";
+import { useAuth } from "../context/AuthContext";
 import Toast from "react-native-root-toast";
 
 const Login = () => {
     const { login } = useAuth();
+
     const [form, setForm] = useState({
         email: "",
         password: "",
     });
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async () => {
-        setIsSubmitting(true);
+        setIsLoading(true);
         try {
-            console.log("handlesumit - Submitting login form with:", form);
-            await login(form.email, form.password);
-            router.push("pluggy");
+            await login();
+            router.push("/(tabs)/home");
         } catch (error) {
             Toast.show(`${error}`, {
                 duration: Toast.durations.SHORT,
@@ -30,7 +30,7 @@ const Login = () => {
                 hideOnPress: true,
             });
         } finally {
-            setIsSubmitting(false);
+            setIsLoading(false);
         }
     };
 
@@ -60,7 +60,7 @@ const Login = () => {
                 <Button
                     title="Login"
                     onPress={handleSubmit}
-                    loading={isSubmitting}
+                    loading={isLoading}
                     containerStyle={styles.buttonContainer}
                     buttonStyle={styles.loginButton}
                 />

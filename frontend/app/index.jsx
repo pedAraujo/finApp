@@ -2,9 +2,12 @@ import { StatusBar } from "expo-status-bar";
 import { ScrollView, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "react-native-elements";
-import { router } from "expo-router"; // Importe router corretamente
+import { router } from "expo-router";
+import React from "react";
+import { useAuth } from "./context/AuthContext";
 
 export default function App() {
+    const { login } = useAuth();
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style="auto" />
@@ -12,7 +15,10 @@ export default function App() {
                 <Text style={styles.title}>FinApp</Text>
                 <Button
                     title="Entrar"
-                    onPress={() => router.push("login")}
+                    onPress={() => {
+                        console.log("index - navigating to /(tabs)/home");
+                        router.navigate("/(tabs)/home");
+                    }}
                     buttonStyle={styles.button}
                     containerStyle={styles.buttonContainer}
                 />

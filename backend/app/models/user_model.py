@@ -1,4 +1,5 @@
-from typing import Optional
+# Description: User model used to interact with the database. The model is created using Beanie, an async MongoDB ODM for FastAPI.
+
 from datetime import datetime
 from uuid import UUID, uuid4
 from beanie import Document, Indexed
@@ -11,9 +12,9 @@ class User(Document):
     username: Indexed(str, unique=True)  # type: ignore
     email: Indexed(EmailStr, unique=True)  # type: ignore
     hash_password: str
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    disabled: Optional[bool] = None
+    first_name: str | None = None
+    last_name: str | None = None
+    disabled: bool | None = None
 
     # helper functions
     def __repr__(self) -> str:

@@ -23,10 +23,10 @@ const SignUp = () => {
         setIsSubmitting(true);
         try {
             const response = await axios.post(
-                `${BACKEND_BASE_URL}/users/create`,
+                `${BACKEND_BASE_URL}/user/create`,
                 form
             );
-            console.log("User created:", response.data);
+            console.log("auth-signup User created:", response.data);
 
             Toast.show("User registered successfully. Please log in", {
                 duration: Toast.durations.SHORT,
